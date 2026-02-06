@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Earthquake Forecast</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        table { border-collapse: collapse; width: 90%; margin-top: 20px; }
+        th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        input[type="text"] { padding: 5px; width: 200px; }
+        input[type="submit"] { padding: 5px 15px; }
+        ul { list-style-type: none; padding-left: 0; }
+        li { margin-bottom: 5px; }
+        .small-table { width: auto; margin: 10px 0; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Earthquake Magnitude Forecast by Region</h1>
+
+    <form method="POST">
+        <label>Region Name: </label>
+        <input type="text" name="region" required>
+        <input type="submit" value="Forecast">
+    </form>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    {% if forecast_ranges %}
+        <h2>Forecasted Magnitude Ranges by Model:</h2>
+        <ul>
+            {% for model, (min_val, max_val) in forecast_ranges.items() %}
+                <li>{{ model }}: {{ "%.2f"|format(min_val) }} – {{ "%.2f"|format(max_val) }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if results %}
+        <h2>Forecast Evaluation Results:</h2>
+        <table>
+            <tr>
+                <th>Model</th>
+                <th>R²</th>
+                <th>RMSE</th>
+                <th>MAE</th>
+                <th>Accuracy (%)</th>
+                <th>Uncertainty (if any)</th>
+            </tr>
+            {% for model, metrics in results.items() %}
+            <tr>
+                <td>{{ model }}</td>
+                <td>{{ metrics['R2'] | round(3) }}</td>
+                <td>{{ metrics['RMSE'] | round(3) }}</td>
+                <td>{{ metrics['MAE'] | round(3) }}</td>
+                <td>{{ metrics['Accuracy (%)'] | round(2) }}</td>
+                <td>
+                    {% if metrics.get('Uncertainty (std)') is number %}
+                        {{ metrics.get('Uncertainty (std)') | round(3) }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>

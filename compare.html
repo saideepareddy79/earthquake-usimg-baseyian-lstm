@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model Comparison</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        h1, h2 { color: #333; }
+        img { max-width: 90%; margin: 20px 0; }
+        a { display: inline-block; margin-top: 20px; text-decoration: none; padding: 6px 12px; background-color: #4CAF50; color: white; border-radius: 5px; }
+        .block { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px; }
+        .block img { width: 45%; margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; background: #f9f9f9; }
+        .single-block img { width: 60%; margin: auto; display: block; border: 1px solid #ccc; padding: 10px; background: #f9f9f9; }
+        .safety-block { width: 70%; margin: 30px auto; background: #e8f5e9; border-left: 6px solid #4CAF50; padding: 20px; border-radius: 8px; }
+        .safety-block li { margin: 8px 0; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <h1>Model Comparison Dashboard</h1>
+
+    <!-- Block 1 -->
+    <div class="block">
+        <img src="data:image/png;base64,{{ img_block1 }}" alt="R² and MAE">
+    </div>
+
+    <!-- Block 2 -->
+    <div class="block">
+        <img src="data:image/png;base64,{{ img_block2 }}" alt="RMSE and Accuracy">
+    </div>
+
+    <!-- Block 3 -->
+    <div class="block">
+        <img src="data:image/png;base64,{{ img_block3 }}" alt="Uncertainty & Rolling Accuracy">
+    </div>
+    <!-- Block 4 -->
+<div class="block">
+    <img src="data:image/png;base64,{{ img_block4 }}" alt="Advanced Line Trends">
+</div>
+
+    <!-- Block 4 -->
+    <div class="safety-block">
+        <h2>⚠️ Safety Measures Recommendations</h2>
+        <ul>
+            {% for msg in safety_msg %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="{{ url_for('index') }}">⬅ Back to Forecast</a>
+</body>
+</html>
